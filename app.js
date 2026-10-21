@@ -176,15 +176,6 @@ const MOVES_WITH_SECONDARY = new Set([
   'Acid','Acid Spray','Mud-Slap','Mud Bomb','Muddy Water','Lick'
 ]);
 
-const NO_CONTACT_MOVES = new Set([
-  'Earthquake','Earth Power','Magnitude','Fissure','Bulldoze','Rock Slide','Rock Throw','Rock Blast','Rock Wrecker','Rock Tomb','Rock Climb','Stone Edge','Smack Down','AncientPower','Power Gem',
-  'Ice Shard','Icicle Spear','Icicle Crash','Freeze-Dry','Seed Bomb','Bullet Seed','Pin Missile','Barrage','Egg Bomb','Magnet Bomb','Gyro Ball',
-  'Future Sight','Doom Desire','Psycho Cut','Metal Burst','Natural Gift','Fling','Present','Bonemerang','Bone Rush','Bone Club','Gunk Shot','Sludge Bomb','Sludge Wave','Shadow Ball',
-  'Weather Ball','Searing Shot','Fire Spin','Whirlpool','Sand Tomb','Bind','Wrap','Clamp','Magma Storm',
-  'SonicBoom','Dragon Rage','Night Shade','Seismic Toss','Counter','Mirror Coat','Psywave','Super Fang','Endeavor','Final Gambit',
-  'Guillotine','Horn Drill','Sheer Cold','Bide','U-turn','Volt Switch','Explosion','Selfdestruct','Spit Up'
-]);
-
 const TRUE_DAMAGE_OVERRIDES = {
   'Seismic Toss':{type:'fixed',value:'level'},'Night Shade':{type:'fixed',value:'level'},
   'SonicBoom':{type:'fixed',value:20},'Dragon Rage':{type:'fixed',value:40},
@@ -221,10 +212,45 @@ function showToast(msg) {
   clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2200);
 }
 function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
-function slug(s) { return s.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''); }
 function typeBadge(type) { return el('span', {class:'type-badge types-' + type}, type); }
-function spriteUrl(name) { return 'assets/pokemon/' + slug(name) + '.png'; }
-function itemUrl(name) { return 'assets/items/' + slug(name) + '.png'; }
+
+/* ============================================================
+   IMAGENS (pokemondb.net)
+   ============================================================ */
+function pokemonSlug(name) {
+  return name
+    .replace(/♀/g, '-f')
+    .replace(/♂/g, '-m')
+    .replace(/\./g, '')
+    .replace(/'/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function itemSlug(name) {
+  if (name === 'None') return '';
+  return name
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[.']/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function spriteUrl(name) {
+  return 'https://img.pokemondb.net/sprites/x-y/normal/' + pokemonSlug(name) + '.png';
+}
+
+function itemUrl(name) {
+  return 'https://img.pokemondb.net/sprites/items/' + itemSlug(name) + '.png';
+}
+
+/* ============ UTIL ============ */
 function statStageMult(stage) {
   if (stage === 0) return 1;
   return stage > 0 ? (2 + stage) / 2 : 2 / (2 - stage);
@@ -243,7 +269,6 @@ async function loadData() {
     fetch('moves.json').then(r => r.json()),
     fetch('evolutions.json').then(r => r.json())
   ]);
-  // dex.json (opcional)
   let dexData = [];
   try { dexData = await fetch('dex.json').then(r => r.json()); }
   catch(e) { console.warn('dex.json não encontrado — filtro de região desabilitado'); }
@@ -636,7 +661,7 @@ function renderMovePicker(body, config) {
       }}},
         el('div', {class:'picker-info'},
           el('div', {class:'picker-name'}, name),
-          el('div', {class:'picker-meta'}, m.category + ' · ' + (m.power || '—') + ' BP · ' + m.type),
+          el('div', {class:'picker-meta'}, m.category + ' · ' + (m.power || '—') + ' BP'),
           el('div', {class:'picker-types'}, typeBadge(m.type))
         )
       ));
@@ -722,7 +747,7 @@ function renderTeam() {
     } else {
       const p = POKEMON[set.species];
       if (!p) { grid.appendChild(el('div', {class:'slot'}, 'Erro')); continue; }
-      const img = el('img', {class:'pkm-sprite', alt:p.name});
+      const img = el('img', {class:'pkm-sprite', alt:p.name, loading:'lazy'});
       img.src = spriteUrl(p.name); img.onerror = () => img.style.display = 'none';
       grid.appendChild(el('div', {class:'slot filled'},
         img,
