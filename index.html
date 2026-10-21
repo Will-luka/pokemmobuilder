@@ -31,29 +31,17 @@
   <section id="tab-team" class="tab-content active">
     <h2>Seu Time</h2>
     <div id="teamGrid" class="team-grid"></div>
-    <p class="hint">Clique em um slot vazio para adicionar um Pokémon. Clique em um Pokémon para editar.</p>
+    <p class="hint">Clique em um slot vazio para adicionar. Clique em um Pokémon para editar.</p>
   </section>
 
   <section id="tab-damage" class="tab-content">
     <h2>Calculadora de Dano</h2>
     <div class="damage-grid">
-      <div class="card">
-        <h3>Atacante</h3>
-        <div id="atkPanel"></div>
-      </div>
-      <div class="card">
-        <h3>Defensor</h3>
-        <div id="defPanel"></div>
-      </div>
+      <div class="card"><h3>Atacante</h3><div id="atkPanel"></div></div>
+      <div class="card"><h3>Defensor</h3><div id="defPanel"></div></div>
     </div>
-    <div class="card">
-      <h3>Condições de Campo</h3>
-      <div class="field-options" id="fieldOpts"></div>
-    </div>
-    <div class="card">
-      <h3>Resultados</h3>
-      <div id="damageResults"><p class="hint">Selecione atacante e defensor.</p></div>
-    </div>
+    <div class="card"><h3>Condições de Campo</h3><div class="field-options" id="fieldOpts"></div></div>
+    <div class="card"><h3>Resultados</h3><div id="damageResults"><p class="hint">Selecione atacante e defensor.</p></div></div>
   </section>
 
   <section id="tab-buffs" class="tab-content">
@@ -61,22 +49,10 @@
     <div class="card">
       <h3>Selecione o Pokémon</h3>
       <div class="form-row">
-        <div class="form-group">
-          <label>Pokémon</label>
-          <select id="buffPokemon"></select>
-        </div>
-        <div class="form-group">
-          <label>Natureza</label>
-          <select id="buffNature"></select>
-        </div>
-        <div class="form-group">
-          <label>Habilidade</label>
-          <select id="buffAbility"></select>
-        </div>
-        <div class="form-group">
-          <label>Item</label>
-          <select id="buffItem"></select>
-        </div>
+        <div class="form-group"><label>Pokémon</label><div id="buffPokemonWrap"></div></div>
+        <div class="form-group"><label>Natureza</label><select id="buffNature"></select></div>
+        <div class="form-group"><label>Habilidade</label><select id="buffAbility"></select></div>
+        <div class="form-group"><label>Item</label><div id="buffItemWrap"></div></div>
       </div>
       <div class="form-group">
         <label>EVs (total 510, máx 252 por stat)</label>
@@ -90,10 +66,7 @@
       <h3 class="mt">Status</h3>
       <div class="inline-flex" id="buffStatus"></div>
     </div>
-    <div class="card">
-      <h3>Stats Resultantes</h3>
-      <div id="buffResult"></div>
-    </div>
+    <div class="card"><h3>Stats Resultantes</h3><div id="buffResult"></div></div>
   </section>
 
   <section id="tab-analysis" class="tab-content">
@@ -124,6 +97,16 @@
       <button class="modal-close" id="modalClose">×</button>
     </div>
     <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="pickerModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="pickerTitle">Selecionar</h2>
+      <button class="modal-close" id="pickerClose">×</button>
+    </div>
+    <div id="pickerBody"></div>
   </div>
 </div>
 
