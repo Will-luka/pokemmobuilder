@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokeMMO Team Builder</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="assets/logo.png" alt="" class="logo-img" onerror="this.style.display='none'">
+    <h1>PokeMMO <span>Team Builder</span></h1>
+  </div>
+  <div class="header-actions">
+    <button id="shareBtn" class="primary">🔗 Compartilhar</button>
+    <button id="importBtn">📥 Importar</button>
+    <button id="clearBtn" class="danger">🗑 Limpar</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="team">🧩 Time</button>
+  <button class="tab" data-tab="damage">⚔ Calculadora de Dano</button>
+  <button class="tab" data-tab="buffs">📊 Buffs / Debuffs</button>
+  <button class="tab" data-tab="analysis">🔍 Análise</button>
+</nav>
+
+<main>
+  <section id="tab-team" class="tab-content active">
+    <h2>Seu Time</h2>
+    <div id="teamGrid" class="team-grid"></div>
+    <p class="hint">Clique em um slot vazio para adicionar um Pokémon. Clique em um Pokémon para editar.</p>
+  </section>
+
+  <section id="tab-damage" class="tab-content">
+    <h2>Calculadora de Dano</h2>
+    <div class="damage-grid">
+      <div class="card">
+        <h3>Atacante</h3>
+        <div id="atkPanel"></div>
+      </div>
+      <div class="card">
+        <h3>Defensor</h3>
+        <div id="defPanel"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Condições de Campo</h3>
+      <div class="field-options" id="fieldOpts"></div>
+    </div>
+    <div class="card">
+      <h3>Resultados</h3>
+      <div id="damageResults"><p class="hint">Selecione atacante e defensor.</p></div>
+    </div>
+  </section>
+
+  <section id="tab-buffs" class="tab-content">
+    <h2>Buffs / Debuffs & Status</h2>
+    <div class="card">
+      <h3>Selecione o Pokémon</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Pokémon</label>
+          <select id="buffPokemon"></select>
+        </div>
+        <div class="form-group">
+          <label>Natureza</label>
+          <select id="buffNature"></select>
+        </div>
+        <div class="form-group">
+          <label>Habilidade</label>
+          <select id="buffAbility"></select>
+        </div>
+        <div class="form-group">
+          <label>Item</label>
+          <select id="buffItem"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>EVs (total 510, máx 252 por stat)</label>
+        <div class="ev-grid" id="buffEVs"></div>
+        <div class="ev-total" id="buffEvTotal">0 / 510</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Modificadores de Stat</h3>
+      <div id="buffBoosts"></div>
+      <h3 class="mt">Status</h3>
+      <div class="inline-flex" id="buffStatus"></div>
+    </div>
+    <div class="card">
+      <h3>Stats Resultantes</h3>
+      <div id="buffResult"></div>
+    </div>
+  </section>
+
+  <section id="tab-analysis" class="tab-content">
+    <h2>Análise do Time</h2>
+    <div class="analysis-grid">
+      <div class="card">
+        <h3>Sinergia Defensiva</h3>
+        <p class="hint">Contagem de fraquezas/resistências do time contra cada tipo.</p>
+        <div id="defAnalysis" class="type-matrix mt"></div>
+      </div>
+      <div class="card">
+        <h3>Cobertura Ofensiva</h3>
+        <p class="hint">Selecione até 6 Pokémon inimigos (Ctrl/Cmd para múltiplos).</p>
+        <div class="form-group mt">
+          <label>Time inimigo</label>
+          <select id="enemyTeam" multiple size="6" class="enemy-select"></select>
+        </div>
+        <div id="offAnalysis" class="mt"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Adicionar Pokémon</h2>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
